@@ -1,3 +1,4 @@
+import math
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -30,10 +31,26 @@ class Triangle:
         else:
             return "Out"
 
+class Circle:
+    def __init__(self,d,r):
+        self.d = d
+        self.r = r
+    def length(self):
+        return 2 * math.pi * self.r
+    def area_circle(self):
+        return math.pi * self.r ** 2
+    def in_or_out(self):
+        if (d.x - z.x) ** 2 + (d.y - z.y) ** 2 <= self.r ** 2:
+            return "In"
+        else:
+            return "Out"
 
 a = Point(0,0)
 b = Point(3,0)
 c = Point(0,4)
+d = Point(4,4)
 z = Point(1,1)
 tri = Triangle(a,b,c)
-print(tri.contains())
+cir = Circle(d,int(input()))
+#print(tri.contains())
+print(cir.in_or_out())
