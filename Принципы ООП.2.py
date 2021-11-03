@@ -12,17 +12,22 @@ class Vehicle:
     def __init__(self,vectors):
         self.vectors = vectors
 
-    def distance(self):
+    #def distance(self):
+    #    return sum(self).x
 
 
-        #for i in range(len(vectors)):
-        #    summ += vectors[i].x
-        return min(vectors).x
+
+
 kol = 2
-vectors = [Vector(int(input()),int(input()),int(input())) for i in range(kol)]
+vectors = []
+for i in range(kol):
+    x,y,quantity = [int(x) for x in input().split()]
+    vectors.append(Vector(x,y,quantity))
 way = Vehicle(vectors)
 print(way.distance())
-#print(vectors[0].x)
+for i in range(kol):
+    print(way.vectors[i].x,way.vectors[i].y,way.vectors[i].quantity)
+
 class Car:
     #def __init__(self,x,y):
     pass
