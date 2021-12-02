@@ -14,6 +14,18 @@ class Pokemon(BasePokemon):
         self.__weight = weight
 
     @property
+    def names(self):
+        return self.__name
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def height(self):
+        return self.__height
+
+    @property
     def weight(self):
         return self.__weight
 
