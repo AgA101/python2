@@ -40,9 +40,9 @@ class PokeAPI:
 print(PokeAPI().get_pokemon("ditto"))
 
 maxx_weight = 0
-name = ""
+pok = ''
 for i in PokeAPI().get_all(50,True):
     if maxx_weight < i.weight:
         maxx_weight = i.weight
-        name = i.name
-print(maxx_weight,name)
+        pok = i
+print(pok)
