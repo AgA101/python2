@@ -4,7 +4,7 @@ class BasePokemon:
         self.name = str(name)
 
     def __str__(self):
-        return f'{self.name}'
+        return f'name={self.name}'
 class Pokemon(BasePokemon):
     def __init__(self, name, id, height, weight):
         BasePokemon.__init__(self, name)
@@ -18,7 +18,7 @@ class Pokemon(BasePokemon):
         return self.__weight
 
     def __str__(self):
-        return f'{self.__name}, {self.__id},{self.__height}, {self.__weight}'
+        return f'name={self.__name}, id={self.__id}, height={self.__height}, weight={self.__weight}'
 
 class PokeAPI:
     def get_pokemon(self,name_id):
@@ -37,7 +37,12 @@ class PokeAPI:
                 yield Pokemon(result["name"], result["id"], result["height"], result["weight"])
             counter += 1
 
-a = PokeAPI().get_pokemon("1")
-print(a)
-for i in PokeAPI().get_all(4,True):
-    print(i)
+print(PokeAPI().get_pokemon("ditto"))
+
+maxx_weight = 0
+name = ""
+for i in PokeAPI().get_all(50,True):
+    if maxx_weight < i.weight:
+        maxx_weight = i.weight
+        name = i.name
+print(maxx_weight,name)
