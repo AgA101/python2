@@ -52,13 +52,11 @@ class PokeAPI:
     def get_pokemon(self, name_id: str) -> Pokemon:
         for i in range(len(pokeball)):
             if pokeball[i].name == name_id or pokeball[i].id == name_id:
-                print("ofghh")
                 return pokeball[i]
         else:
             url = "https://pokeapi.co/api/v2/pokemon/" + name_id + "/"
             result = requests.get(url).json()
             pokeball.append(Pokemon(result["name"], result["id"], result["height"], result["weight"]))
-            print("33455")
             return Pokemon(result["name"], result["id"], result["height"], result["weight"])
 
     def get_all(self, max_counter: int, get_full=False) -> Iterator:
@@ -77,12 +75,9 @@ pokeball = []
 maxx_weight: int = 0
 
 print(PokeAPI().get_pokemon("ditto"))
-print(PokeAPI().get_pokemon("ditto"))
-#print(PokeAPI().get_pokemon("110"))
-"""
+
 for i in PokeAPI().get_all(50, True):
     if maxx_weight < i.weight:
         maxx_weight = i.weight
         pok = i
 print(pok)
-"""
