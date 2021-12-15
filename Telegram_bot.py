@@ -1,20 +1,20 @@
 import telebot
 import credentials
 from telebot import types
-name = ""
-surname = ""
-age = None
+name = "Не указано"
+surname = "Не указано"
+age = "Не указано"
+mail = "Не указано"
 bot = telebot.TeleBot(credentials.TOKEN)
 @bot.message_handler(commands=["start","help"])
 def send(message):
-    bot.reply_to(message, "how are you")
+    bot.reply_to(message, "/reg - команда для регистрации")
 
 @bot.message_handler(func=lambda message: True)
 def exo(message):
     if message.text == "/reg":
         bot.send_message(message.from_user.id, "Привет! Давай познакомимся! Как тебя зовут?")
         bot.register_next_step_handler(message, reg_name)
-    #bot.reply_to(message,message.text)
 
 def reg_name(message):
     global name
@@ -25,6 +25,12 @@ def reg_name(message):
 def reg_surname(message):
     global surname
     surname = message.text
+    bot.send_message(message.from_user.id, "Какая у вас электронная почта?")
+    bot.register_next_step_handler(message, reg_mail)
+
+def reg_mail(message):
+    global mail
+    mail = message.text
     bot.send_message(message.from_user.id, "Сколько вам лет?")
     bot.register_next_step_handler(message, reg_age)
 
@@ -33,19 +39,19 @@ def reg_age(message):
     age = message.text
     try:
         age = int(message.text)
+        bot.send_message(message.from_user.id, "Повторите возраст еще раз")
         bot.register_next_step_handler(message, reg_end)
+
     except Exception:
         bot.send_message(message.from_user.id, "Вводите цифры!")
         bot.register_next_step_handler(message, reg_age)
 
 
-    #bot.register_next_step_handler(message, reg_end)
-
 def reg_end(message):
     global age
     global name
     global surname
-    statement ="Тебе" + str(age) + "и тебя зовут" + str(name) + str(surname)
+    statement ="Вам " + str(age) + ", вас зовут " + str(name) + " " + str(surname) + " и ваша почта " + str(mail) + " Все верно?"
     keyboard = types.InlineKeyboardMarkup()
     key_y = types.InlineKeyboardButton(text="Да", callback_data="yes")
     keyboard.add(key_y)
