@@ -37,6 +37,7 @@ def reg_mail(message):
 def reg_age(message):
     global age
     age[message.from_user.id] = message.text
+
     try:
         age[message.from_user.id] = int(message.text)
         bot.send_message(message.from_user.id, "Повторите возраст еще раз")
@@ -47,13 +48,15 @@ def reg_age(message):
         bot.register_next_step_handler(message, reg_age)
 
 
+
 def reg_end(message):
     global age
+    age[message.from_user.id] = message.text
     global name
     global surname
     global mail
 
-    statement ="Вам " + str(age[message.from_user.id]) + ", вас зовут " + str(name[message.from_user.id]) + " " + str(surname[message.from_user.id]) + " и ваша почта " + str(mail[message.from_user.id]) + " Все верно?"
+    statement = "Вам " + str(age[message.from_user.id]) + ", вас зовут " + str(name[message.from_user.id]) + " " + str(surname[message.from_user.id]) + " и ваша почта " + str(mail[message.from_user.id]) + " Все верно?"
     keyboard = types.InlineKeyboardMarkup()
     key_y = types.InlineKeyboardButton(text="Да", callback_data="yes")
     keyboard.add(key_y)
