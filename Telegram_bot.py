@@ -1,10 +1,10 @@
 import telebot
 import credentials
 from telebot import types
-name = "Не указано"
-surname = "Не указано"
-age = "Не указано"
-mail = "Не указано"
+name = {}
+surname = {}
+age = {}
+mail = {}
 bot = telebot.TeleBot(credentials.TOKEN)
 @bot.message_handler(commands=["start","help"])
 def send(message):
@@ -18,27 +18,27 @@ def exo(message):
 
 def reg_name(message):
     global name
-    name = message.text
+    name[message.from_user.id] = message.text
     bot.send_message(message.from_user.id, "Какая у вас фамилия?")
     bot.register_next_step_handler(message, reg_surname)
 
 def reg_surname(message):
     global surname
-    surname = message.text
+    surname[message.from_user.id] = message.text
     bot.send_message(message.from_user.id, "Какая у вас электронная почта?")
     bot.register_next_step_handler(message, reg_mail)
 
 def reg_mail(message):
     global mail
-    mail = message.text
+    mail[message.from_user.id] = message.text
     bot.send_message(message.from_user.id, "Сколько вам лет?")
     bot.register_next_step_handler(message, reg_age)
 
 def reg_age(message):
     global age
-    age = message.text
+    age[message.from_user.id] = message.text
     try:
-        age = int(message.text)
+        age[message.from_user.id] = int(message.text)
         bot.send_message(message.from_user.id, "Повторите возраст еще раз")
         bot.register_next_step_handler(message, reg_end)
 
@@ -51,7 +51,9 @@ def reg_end(message):
     global age
     global name
     global surname
-    statement ="Вам " + str(age) + ", вас зовут " + str(name) + " " + str(surname) + " и ваша почта " + str(mail) + " Все верно?"
+    global mail
+
+    statement ="Вам " + str(age[message.from_user.id]) + ", вас зовут " + str(name[message.from_user.id]) + " " + str(surname[message.from_user.id]) + " и ваша почта " + str(mail[message.from_user.id]) + " Все верно?"
     keyboard = types.InlineKeyboardMarkup()
     key_y = types.InlineKeyboardButton(text="Да", callback_data="yes")
     keyboard.add(key_y)
