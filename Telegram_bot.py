@@ -10,11 +10,10 @@ bot = telebot.TeleBot(credentials.TOKEN)
 def send(message):
     bot.reply_to(message, "/reg - команда для регистрации")
 
-@bot.message_handler(func=lambda message: True)
+@bot.message_handler(commands=["reg"])
 def exo(message):
-    if message.text == "/reg":
-        bot.send_message(message.from_user.id, "Привет! Давай познакомимся! Как тебя зовут?")
-        bot.register_next_step_handler(message, reg_name)
+    bot.send_message(message.from_user.id, "Привет! Давай познакомимся! Как тебя зовут?")
+    bot.register_next_step_handler(message, reg_name)
 
 def reg_name(message):
     global name
@@ -36,33 +35,25 @@ def reg_mail(message):
 
 def reg_age(message):
     global age
+    global name
+    global surname
+    global mail
     age[message.from_user.id] = message.text
-
     try:
         age[message.from_user.id] = int(message.text)
-        bot.send_message(message.from_user.id, "Повторите возраст еще раз")
-        bot.register_next_step_handler(message, reg_end)
+        statement = "Вам " + str(age[message.from_user.id]) + ", вас зовут " + str(
+            name[message.from_user.id]) + " " + str(surname[message.from_user.id]) + " и ваша почта " + str(
+            mail[message.from_user.id]) + " Все верно?"
+        keyboard = types.InlineKeyboardMarkup()
+        key_y = types.InlineKeyboardButton(text="Да", callback_data="yes")
+        keyboard.add(key_y)
+        key_n = types.InlineKeyboardButton(text="Нет", callback_data="no")
+        keyboard.add(key_n)
+        bot.send_message(message.from_user.id, text=statement, reply_markup=keyboard)
 
     except Exception:
         bot.send_message(message.from_user.id, "Вводите цифры!")
         bot.register_next_step_handler(message, reg_age)
-
-
-
-def reg_end(message):
-    global age
-    age[message.from_user.id] = message.text
-    global name
-    global surname
-    global mail
-
-    statement = "Вам " + str(age[message.from_user.id]) + ", вас зовут " + str(name[message.from_user.id]) + " " + str(surname[message.from_user.id]) + " и ваша почта " + str(mail[message.from_user.id]) + " Все верно?"
-    keyboard = types.InlineKeyboardMarkup()
-    key_y = types.InlineKeyboardButton(text="Да", callback_data="yes")
-    keyboard.add(key_y)
-    key_n = types.InlineKeyboardButton(text="Нет", callback_data="no")
-    keyboard.add(key_n)
-    bot.send_message(message.from_user.id, text=statement, reply_markup=keyboard)
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
